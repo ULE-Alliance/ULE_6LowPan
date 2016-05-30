@@ -1,0 +1,62 @@
+/**
+@startuml
+	Participant CloudServer
+	Participant Router
+	Participant Host
+	Participant 6LBR
+	Participant 6LN
+	Participant Application
+
+	== 6LBR GLOBAL IP ASSIGNMENT ==
+	6LBR -> Router : RS
+	Router -> 6LBR : RA
+	
+
+	== DECT REGISTRATION ==
+    6LN <-> 6LBR : Dect registration   
+	
+	== NODE REGISTRATION ==
+	6LN -> 6LBR : RS
+	6LBR -> 6LN : RA
+	6LN -> 6LBR : NS
+	6LBR -> 6LN : NA
+	
+	== NODE WANTS TO SEND MESSAGE TO 6LBR ==
+	6LN -> 6LBR : UDP
+	
+	 == 6LBR WANTS TO SEND MESSAGE TO NODE ==
+	6LBR -> 6LN : UDP
+	
+	== NODE WANTS TO SEND MESSAGE TO HOST\nDirect IP address ==
+	6LN -> 6LBR : UDP message to Host
+	6LBR -> Host : NS
+	Host -> 6LBR : NA
+	6LBR -> Host : UDP message to host  
+	
+	== HOST WANTS TO SEND MESSAGE TO 6LN\nDirect IP address ==
+	Host -> 6LBR : NS
+	6LBR -> Host : NA
+	Host -> 6LBR : UDP message to 6LN
+	6LBR -> 6LN : UDP message to 6LN 
+	6LN -> Application : UDP message to 6LN
+
+	== NODE REGISTERS AT CLOUD SERVER\nDNS NOT IMPLEMENTED YET ==
+	Application -> 6LN : UDP register to cloudX
+	6LN -> 6LBR : DNS request
+	6LBR -> Router : DNS Request
+	Router -> 6LBR : DNS Answer
+	6LBR -> 6LN : DNS Answer
+	6LN -> 6LBR : UDP register to cloudX
+	6LBR -> Router : UDP register to cloudX
+	Router -> CloudServer : UDP register to cloudX
+	CloudServer -> Router : UDP register confirmation
+	Router -> 6LBR : UDP register confirmation
+	6LBR -> 6LN : UDP register confirmation
+	6LN -> Application : UDP register confirmation
+	
+	
+	
+	
+
+@enduml
+*/
